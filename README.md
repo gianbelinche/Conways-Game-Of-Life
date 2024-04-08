@@ -20,7 +20,11 @@ The initial pattern constitutes the seed of the system. The first generation is 
 
 ## Usage
 
-TODO
+You should have Rust and Cargo installed
+
+Clone this repository and execute the following command to run
+
+`cargo run`
 
 ## References
 
