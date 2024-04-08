@@ -1,5 +1,7 @@
 use macroquad::prelude::*;
 
+use crate::game_logic::{GameGrid,State};
+
 struct Grid {
     offset_x: f32,
     offset_y: f32,
@@ -15,7 +17,7 @@ fn get_grid(squares: u32) -> Grid {
     Grid{offset_x,offset_y,sq_size}
 }
 
-pub async fn create_grid(squares: u32) {
+async fn draw_grid_outline(squares: u32) {
     let grid = get_grid(squares);
 
     for i in 0..squares+1 {
@@ -41,9 +43,19 @@ pub async fn create_grid(squares: u32) {
     }
 }
 
-pub async fn fill_square(i: u32, j:u32,squares:u32 ) {
+async fn fill_square(i: u32, j:u32,squares:u32 ) {
     let grid = get_grid(squares);
 
     draw_rectangle(grid.offset_x + grid.sq_size * i as f32, grid.offset_y + grid.sq_size * j as f32, grid.sq_size, grid.sq_size, BLACK);
 }
 
+pub async fn draw_grid(grid: GameGrid) {
+    draw_grid_outline(grid.squares).await;
+    for (i,row) in grid.state.iter().enumerate() {
+        for (j,state) in row.iter().enumerate() {
+            if *state == State::Alive {
+                fill_square(i as u32, j as u32, grid.squares).await;
+            }
+        }
+    }
+}
