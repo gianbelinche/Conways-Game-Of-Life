@@ -1,4 +1,4 @@
-#[derive(Clone,Eq,PartialEq)]
+#[derive(Clone,Eq,PartialEq,Copy)]
 pub enum State{
     Alive,
     Dead
@@ -19,4 +19,20 @@ pub fn create_initial_game_grid(squares:u32) -> GameGrid{
         }
     }
     GameGrid{squares,state}
+}
+
+pub fn update_game_grid(game_grid: &GameGrid) -> GameGrid{
+    let mut new_game_grid = create_initial_game_grid(game_grid.squares);
+    for i in 0..game_grid.squares {
+        for j in 0..game_grid.squares {
+            let new_state = get_new_state(i as usize,j as usize,&game_grid);
+            new_game_grid.state[i as usize][j as usize] = new_state;
+        }
+    }
+
+    new_game_grid
+}
+
+fn get_new_state(i: usize,j: usize,grid: &GameGrid) -> State {
+    grid.state[i][j]
 }

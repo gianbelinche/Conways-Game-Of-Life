@@ -49,7 +49,7 @@ async fn fill_square(i: u32, j:u32,squares:u32 ) {
     draw_rectangle(grid.offset_x + grid.sq_size * i as f32, grid.offset_y + grid.sq_size * j as f32, grid.sq_size, grid.sq_size, BLACK);
 }
 
-pub async fn draw_grid(grid: GameGrid) {
+pub async fn draw_grid(grid: &GameGrid) {
     draw_grid_outline(grid.squares).await;
     for (i,row) in grid.state.iter().enumerate() {
         for (j,state) in row.iter().enumerate() {
