@@ -1,15 +1,19 @@
 use std::error::Error;
 use macroquad::prelude::*;
+use std::env;
 mod graphical_interface;
 mod game_logic;
 mod parser;
 
 use std::thread;
 use std::time;
-const SQUARES: u32 = 16;
 #[macroquad::main("Conways Game Of Life")]
 async fn main() -> Result<(),Box<dyn Error>>{
-    let mut game_grid = parser::parse_grid("grid.csv".to_string())?;
+    let args: Vec<String> = env::args().collect();
+    if args.len() != 2 {
+        panic!("Incorrect number of args");
+    }
+    let mut game_grid = parser::parse_grid(&args[1])?;
     loop {
         clear_background(WHITE);
         

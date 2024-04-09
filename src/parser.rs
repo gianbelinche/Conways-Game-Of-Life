@@ -1,7 +1,7 @@
 use std::error::Error;
 use super::game_logic;
 
-pub fn parse_grid(path: String) -> Result<game_logic::GameGrid, Box<dyn Error>> {
+pub fn parse_grid(path: &String) -> Result<game_logic::GameGrid, Box<dyn Error>> {
     // Returns a grid from a path to a file, it does not have error handling yet
     let mut state: Vec<Vec<game_logic::State>> = vec![];
     let mut rdr = csv::ReaderBuilder::new().has_headers(false).from_path(path)?;
