@@ -13,7 +13,7 @@ pub struct GameGrid {
 
 pub fn create_initial_game_grid(squares:u32) -> GameGrid{
     // Creates an initial grid of size squares
-    // Right now the grid is harcoded as vertical lines, one alives an two dead, later this will be changed
+    // Right now the grid is harcoded as vertical lines, one alives an two deadg, later this will be changed
     let mut state = vec![];
     for i in 0..squares {
         if i % 3 == 0 {
@@ -39,7 +39,7 @@ pub fn update_game_grid(game_grid: &GameGrid) -> GameGrid{
 }
 
 fn get_new_state(i: usize,j: usize,grid: &GameGrid) -> State {
-    // Given a cell, returns the new state based on game of lifes rules, WIP
+    // Given a cell, returns the new state based on game of lifes rules
     let alive_neighbours = get_alive_neighbours(i,j,grid);
     if grid.state[i][j] == State::Dead && alive_neighbours == 3 {
         State::Alive
