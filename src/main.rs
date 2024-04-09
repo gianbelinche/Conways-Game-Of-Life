@@ -1,20 +1,20 @@
 use macroquad::prelude::*;
 mod graphical_interface;
+mod game_logic;
 
+use std::thread;
+use std::time;
 const SQUARES: u32 = 16;
 #[macroquad::main("Conways Game Of Life")]
 async fn main() {
+    let mut game_grid = game_logic::create_initial_game_grid(SQUARES);
     loop {
         clear_background(WHITE);
+        
+        graphical_interface::draw_grid(&game_grid).await;
+        game_grid = game_logic::update_game_grid(&game_grid);
 
-        graphical_interface::create_grid(SQUARES).await;
-
-        graphical_interface::fill_square(1,7,SQUARES).await;
-        graphical_interface::fill_square(3,9,SQUARES).await;
-        graphical_interface::fill_square(3,10,SQUARES).await;
-        graphical_interface::fill_square(4,9,SQUARES).await;
-        graphical_interface::fill_square(15,15,SQUARES).await;
-
+        thread::sleep(time::Duration::from_millis(500));
         next_frame().await
     }
 }
