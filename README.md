@@ -26,6 +26,10 @@ Clone this repository and execute the following command to run
 
 `cargo run`
 
+Use the following command to run tests
+
+`cargo test`
+
 ## References
 
 [Conway's Game of Life's Wikipedia](https://en.wikipedia.org/wiki/Conway%27s_Game_of_Life) 
