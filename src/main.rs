@@ -10,7 +10,7 @@ use std::time;
 #[macroquad::main("Conways Game Of Life")]
 async fn main() -> Result<(),Box<dyn Error>>{
     let args: Vec<String> = env::args().collect();
-    if args.len() != 2 {
+    if args.len() != 3 {
         panic!("Incorrect number of args");
     }
     let mut game_grid = parser::parse_grid(&args[1])?;
@@ -20,7 +20,7 @@ async fn main() -> Result<(),Box<dyn Error>>{
         graphical_interface::draw_grid(&game_grid).await;
         game_grid = game_logic::update_game_grid(&game_grid);
 
-        thread::sleep(time::Duration::from_millis(500));
+        thread::sleep(time::Duration::from_millis(args[2].parse::<u64>().unwrap()));
         next_frame().await
     }
 }

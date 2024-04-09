@@ -59,7 +59,7 @@ pub async fn draw_grid(grid: &GameGrid) {
     for (i,row) in grid.state.iter().enumerate() {
         for (j,state) in row.iter().enumerate() {
             if *state == State::Alive {
-                fill_square(i as u32, j as u32, grid.squares).await;
+                fill_square(j as u32, i as u32, grid.squares).await;
             }
         }
     }
