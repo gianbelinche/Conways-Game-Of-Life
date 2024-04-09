@@ -1,13 +1,15 @@
+use std::error::Error;
 use macroquad::prelude::*;
 mod graphical_interface;
 mod game_logic;
+mod parser;
 
 use std::thread;
 use std::time;
 const SQUARES: u32 = 16;
 #[macroquad::main("Conways Game Of Life")]
-async fn main() {
-    let mut game_grid = game_logic::create_initial_game_grid(SQUARES);
+async fn main() -> Result<(),Box<dyn Error>>{
+    let mut game_grid = parser::parse_grid("grid.csv".to_string())?;
     loop {
         clear_background(WHITE);
         
