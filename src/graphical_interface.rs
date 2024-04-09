@@ -64,3 +64,12 @@ pub async fn draw_grid(grid: &GameGrid) {
         }
     }
 }
+
+pub async fn draw_error(error: &str) {
+    // Draws the error message on screen
+
+    clear_background(RED);
+
+    draw_text("ERROR:", 20.0, 40.0, 40.0, DARKGRAY);
+    draw_text(error, 20.0, 70.0, 40.0, DARKGRAY);
+}
