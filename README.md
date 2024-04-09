@@ -24,11 +24,32 @@ You should have Rust and Cargo installed
 
 Clone this repository and execute the following command to run
 
-`cargo run`
+`cargo run <path_to_csv_file> <time_between_frames_in_milliseconds>`
 
 Use the following command to run tests
 
 `cargo test`
+
+### CSV Format
+
+The CSV file taken as input should have the following format, representig the initial state of the grid
+
+```
+1,0,0,0,
+0,0,0,1,
+0,0,0,0,
+1,0,0,0,
+```
+
+With 1 representing an alive cell, and 0 a dead cell.
+
+## Examples
+
+Three examples are provided under the examples folder, you can run them as follows
+
+- Glider: `cargo run examples/glider.csv 500`
+- Space Ship: `cargo run examples/space_ship.csv 500`
+- Glider Gun: `cargo run examples/glider_gun.csv 100`
 
 ## References
 
