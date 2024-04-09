@@ -13,14 +13,9 @@ pub struct GameGrid {
 
 pub fn create_initial_game_grid(squares:u32) -> GameGrid{
     // Creates an initial grid of size squares
-    // Right now the grid is harcoded as vertical lines, one alives an two deadg, later this will be changed
     let mut state = vec![];
-    for i in 0..squares {
-        if i % 3 == 0 {
-            state.push(vec![State::Alive;squares as usize]);
-        } else {
-            state.push(vec![State::Dead;squares as usize]);
-        }
+    for _ in 0..squares {
+        state.push(vec![State::Dead;squares as usize]);
     }
     GameGrid{squares,state}
 }

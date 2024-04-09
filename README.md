@@ -51,6 +51,18 @@ Three examples are provided under the examples folder, you can run them as follo
 - Space Ship: `cargo run examples/space_ship.csv 500`
 - Glider Gun: `cargo run examples/glider_gun.csv 100`
 
+## Error Handling
+
+The following errors can occur, they show a message on screen detailing the error
+
+- File not Found: `cargo run examples/not_existing_file.csv 500`
+- Invalid number for time argument: `cargo run examples/glider.csv a`
+- Incorrect number of arguments: `cargo run examples/glider.csv`
+- Incorrect formatting of CSV:
+    - `cargo run examples/wrong_format.csv 100`
+    - `cargo run examples/wrong_format_2.csv 100`
+    - `cargo run examples/wrong_format_3.csv 100`
+
 ## References
 
 [Conway's Game of Life's Wikipedia](https://en.wikipedia.org/wiki/Conway%27s_Game_of_Life) 
