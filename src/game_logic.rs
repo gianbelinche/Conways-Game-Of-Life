@@ -101,7 +101,7 @@ fn index_no_overflow_add(i: i32, squares: u32) -> i32{
     }
 }
 
-
+#[cfg(test)]
 mod tests {
     use super::update_game_grid;
     use super::GameGrid;
