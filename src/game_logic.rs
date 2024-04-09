@@ -1,4 +1,4 @@
-#[derive(Clone,Eq,PartialEq,Copy)]
+#[derive(Clone,Eq,PartialEq,Copy,Debug)]
 pub enum State{
     // Describes the 2 possible states of a Cell in the Grid
     Alive,
@@ -13,13 +13,13 @@ pub struct GameGrid {
 
 pub fn create_initial_game_grid(squares:u32) -> GameGrid{
     // Creates an initial grid of size squares
-    // Right now the grid is harcoded as vertical lines, one dead an one alive, later this will be changed
+    // Right now the grid is harcoded as vertical lines, one alives an two dead, later this will be changed
     let mut state = vec![];
     for i in 0..squares {
-        if i % 2 == 0 {
-            state.push(vec![State::Dead;squares as usize]);
-        } else {
+        if i % 3 == 0 {
             state.push(vec![State::Alive;squares as usize]);
+        } else {
+            state.push(vec![State::Dead;squares as usize]);
         }
     }
     GameGrid{squares,state}
@@ -99,4 +99,149 @@ fn index_no_overflow_add(i: i32, squares: u32) -> i32{
     } else {
         i + 1
     }
+}
+
+
+mod tests {
+    use super::update_game_grid;
+    use super::GameGrid;
+    use super::State;
+
+    #[test]
+    fn test_update_game_grid_all_dead(){
+        let squares = 4;
+        let state = vec![
+            vec![State::Dead,State::Dead,State::Dead,State::Dead],
+            vec![State::Dead,State::Dead,State::Dead,State::Dead],
+            vec![State::Dead,State::Dead,State::Dead,State::Dead],
+            vec![State::Dead,State::Dead,State::Dead,State::Dead],
+        ];
+
+        let game_grid = GameGrid{squares,state};
+
+        let new_game_grid = update_game_grid(&game_grid);
+
+        assert_eq!(game_grid.state,new_game_grid.state);
+    }
+
+
+    #[test]
+    fn test_update_game_grid_all_alive(){
+        let squares = 4;
+        let state = vec![
+            vec![State::Alive,State::Alive,State::Alive,State::Alive],
+            vec![State::Alive,State::Alive,State::Alive,State::Alive],
+            vec![State::Alive,State::Alive,State::Alive,State::Alive],
+            vec![State::Alive,State::Alive,State::Alive,State::Alive],
+        ];
+
+        let game_grid = GameGrid{squares,state};
+
+        let new_game_grid = update_game_grid(&game_grid);
+        
+        let result_grid_state = vec![
+            vec![State::Dead,State::Dead,State::Dead,State::Dead],
+            vec![State::Dead,State::Dead,State::Dead,State::Dead],
+            vec![State::Dead,State::Dead,State::Dead,State::Dead],
+            vec![State::Dead,State::Dead,State::Dead,State::Dead],
+        ];
+        assert_eq!(result_grid_state,new_game_grid.state);
+    }
+
+    #[test]
+    fn test_update_game_grid_one_alive(){
+        let squares = 4;
+        let state = vec![
+            vec![State::Dead,State::Dead,State::Dead,State::Dead],
+            vec![State::Dead,State::Alive,State::Dead,State::Dead],
+            vec![State::Dead,State::Dead,State::Dead,State::Dead],
+            vec![State::Dead,State::Dead,State::Dead,State::Dead],
+        ];
+
+        let game_grid = GameGrid{squares,state};
+
+        let new_game_grid = update_game_grid(&game_grid);
+        
+        let result_grid_state = vec![
+            vec![State::Dead,State::Dead,State::Dead,State::Dead],
+            vec![State::Dead,State::Dead,State::Dead,State::Dead],
+            vec![State::Dead,State::Dead,State::Dead,State::Dead],
+            vec![State::Dead,State::Dead,State::Dead,State::Dead],
+        ];
+        assert_eq!(result_grid_state,new_game_grid.state);
+    }
+
+    #[test]
+    fn test_update_game_grid_one_alive_stays_alive(){
+        let squares = 4;
+        let state = vec![
+            vec![State::Dead,State::Dead,State::Alive,State::Dead],
+            vec![State::Dead,State::Alive,State::Dead,State::Dead],
+            vec![State::Alive,State::Dead,State::Dead,State::Dead],
+            vec![State::Dead,State::Dead,State::Dead,State::Dead],
+        ];
+
+        let game_grid = GameGrid{squares,state};
+
+        let new_game_grid = update_game_grid(&game_grid);
+        
+        let result_grid_state = vec![
+            vec![State::Dead,State::Dead,State::Dead,State::Dead],
+            vec![State::Dead,State::Alive,State::Dead,State::Dead],
+            vec![State::Dead,State::Dead,State::Dead,State::Dead],
+            vec![State::Dead,State::Dead,State::Dead,State::Dead],
+        ];
+        assert_eq!(result_grid_state,new_game_grid.state);
+    }
+
+    #[test]
+    fn test_update_game_grid_dead_with_3_alive_neighbours_is_alive(){
+        let squares = 5;
+        let state = vec![
+            vec![State::Dead,State::Alive,State::Dead,State::Dead,State::Dead],
+            vec![State::Dead,State::Dead,State::Dead,State::Dead,State::Dead],
+            vec![State::Alive,State::Dead,State::Alive,State::Dead,State::Dead],
+            vec![State::Dead,State::Dead,State::Dead,State::Dead,State::Dead],
+            vec![State::Dead,State::Dead,State::Dead,State::Dead,State::Dead],
+        ];
+
+        let game_grid = GameGrid{squares,state};
+
+        let new_game_grid = update_game_grid(&game_grid);
+        
+        let result_grid_state = vec![
+            vec![State::Dead,State::Dead,State::Dead,State::Dead,State::Dead],
+            vec![State::Dead,State::Alive,State::Dead,State::Dead,State::Dead],
+            vec![State::Dead,State::Dead,State::Dead,State::Dead,State::Dead],
+            vec![State::Dead,State::Dead,State::Dead,State::Dead,State::Dead],
+            vec![State::Dead,State::Dead,State::Dead,State::Dead,State::Dead],
+        ];
+        assert_eq!(result_grid_state,new_game_grid.state);
+    }
+
+    #[test]
+    fn test_update_game_grid_glider(){
+        let squares = 5;
+        let state = vec![
+            vec![State::Dead,State::Alive,State::Dead,State::Dead,State::Dead],
+            vec![State::Dead,State::Dead,State::Alive,State::Dead,State::Dead],
+            vec![State::Alive,State::Alive,State::Alive,State::Dead,State::Dead],
+            vec![State::Dead,State::Dead,State::Dead,State::Dead,State::Dead],
+            vec![State::Dead,State::Dead,State::Dead,State::Dead,State::Dead],
+        ];
+
+        let game_grid = GameGrid{squares,state};
+
+        let new_game_grid = update_game_grid(&game_grid);
+        
+        let result_grid_state = vec![
+            vec![State::Dead,State::Dead,State::Dead,State::Dead,State::Dead],
+            vec![State::Alive,State::Dead,State::Alive,State::Dead,State::Dead],
+            vec![State::Dead,State::Alive,State::Alive,State::Dead,State::Dead],
+            vec![State::Dead,State::Alive,State::Dead,State::Dead,State::Dead],
+            vec![State::Dead,State::Dead,State::Dead,State::Dead,State::Dead],
+        ];
+        assert_eq!(result_grid_state,new_game_grid.state);
+    }
+
 }
