@@ -25,8 +25,8 @@ pub fn update_game_grid(game_grid: &mut GameGrid) {
     let mut new_game_grid = create_initial_game_grid(game_grid.squares);
     for i in 0..game_grid.squares {
         for j in 0..game_grid.squares {
-            let new_state = get_new_state(i as usize, j as usize, &game_grid);
-            new_game_grid.state[i as usize][j as usize] = new_state;
+            let new_state = get_new_state(i, j, game_grid);
+            new_game_grid.state[i][j] = new_state;
         }
     }
 

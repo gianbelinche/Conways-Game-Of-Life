@@ -14,7 +14,7 @@ fn get_grid(squares: usize) -> Grid {
     let game_size = screen_width().min(screen_height());
     let offset_x = (screen_width() - game_size) / 2. + 10.;
     let offset_y = (screen_height() - game_size) / 2. + 10.;
-    let sq_size = (screen_height() - offset_y * 2.) / squares as f32;
+    let sq_size = offset_y.mul_add(-2., screen_height()) / squares as f32;
 
     Grid {
         offset_x,
@@ -30,9 +30,9 @@ async fn draw_grid_outline(squares: usize) {
     for i in 0..squares + 1 {
         draw_line(
             grid.offset_x,
-            grid.offset_y + grid.sq_size * i as f32,
+            grid.sq_size.mul_add(i as f32, grid.offset_y),
             screen_width() - grid.offset_x,
-            grid.offset_y + grid.sq_size * i as f32,
+            grid.sq_size.mul_add(i as f32, grid.offset_y),
             2.,
             LIGHTGRAY,
         );
@@ -40,9 +40,9 @@ async fn draw_grid_outline(squares: usize) {
 
     for i in 0..squares + 1 {
         draw_line(
-            grid.offset_x + grid.sq_size * i as f32,
+            grid.sq_size.mul_add(i as f32, grid.offset_x),
             grid.offset_y,
-            grid.offset_x + grid.sq_size * i as f32,
+            grid.sq_size.mul_add(i as f32, grid.offset_x),
             screen_height() - grid.offset_y,
             2.,
             LIGHTGRAY,
@@ -55,8 +55,8 @@ async fn fill_square(i: u32, j: u32, squares: usize) {
     let grid = get_grid(squares);
 
     draw_rectangle(
-        grid.offset_x + grid.sq_size * i as f32,
-        grid.offset_y + grid.sq_size * j as f32,
+        grid.sq_size.mul_add(i as f32, grid.offset_x),
+        grid.sq_size.mul_add(j as f32, grid.offset_y),
         grid.sq_size,
         grid.sq_size,
         BLACK,
