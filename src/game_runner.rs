@@ -1,6 +1,6 @@
-use std::error::Error;
 use macroquad::prelude::*;
 use std::env;
+use crate::custom_error::CustomError;
 use crate::game_logic::GameGrid;
 
 use super::graphical_interface;
@@ -10,12 +10,15 @@ use super::parser;
 use std::thread;
 use std::time;
 
-pub fn check_game_validity() -> Result<(GameGrid,u64),Box<dyn Error>> {
+pub fn check_game_validity() -> Result<(GameGrid,u64),CustomError> {
     let args: Vec<String> = env::args().collect();
     if args.len() != 3 {
-        return Err(Box::new(parser::CustomError("Incorrect number of arguments".to_string())));
+        return Err(CustomError::IncorrectNumberOfArguments);
     }
-    let milliseconds = args[2].parse::<u64>()?;
+    let milliseconds = match args[2].parse::<u64>() {
+        Ok(res) => res,
+        Err(_) => return Err(CustomError::BadMilliseconds)
+    };
     Ok((parser::parse_grid(&args[1])?,milliseconds))
 }
 

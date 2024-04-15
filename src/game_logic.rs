@@ -4,7 +4,7 @@ pub enum State{
     Alive,
     Dead
 }
-
+#[derive(Clone)]
 pub struct GameGrid {
     // Represents the squared grid of size squares
     pub squares: u32,
@@ -112,11 +112,12 @@ mod tests {
             vec![State::Dead,State::Dead,State::Dead,State::Dead],
         ];
 
-        let game_grid = GameGrid{squares,state};
+        let mut game_grid = GameGrid{squares,state};
+        let old_game_grid = game_grid.clone();
 
-        let new_game_grid = update_game_grid(&game_grid);
+        update_game_grid(&mut game_grid);
 
-        assert_eq!(game_grid.state,new_game_grid.state);
+        assert_eq!(game_grid.state,old_game_grid.state);
     }
 
 
@@ -130,9 +131,9 @@ mod tests {
             vec![State::Alive,State::Alive,State::Alive,State::Alive],
         ];
 
-        let game_grid = GameGrid{squares,state};
+        let mut game_grid = GameGrid{squares,state};
 
-        let new_game_grid = update_game_grid(&game_grid);
+        update_game_grid(&mut game_grid);
         
         let result_grid_state = vec![
             vec![State::Dead,State::Dead,State::Dead,State::Dead],
@@ -140,7 +141,7 @@ mod tests {
             vec![State::Dead,State::Dead,State::Dead,State::Dead],
             vec![State::Dead,State::Dead,State::Dead,State::Dead],
         ];
-        assert_eq!(result_grid_state,new_game_grid.state);
+        assert_eq!(result_grid_state,game_grid.state);
     }
 
     #[test]
@@ -153,9 +154,9 @@ mod tests {
             vec![State::Dead,State::Dead,State::Dead,State::Dead],
         ];
 
-        let game_grid = GameGrid{squares,state};
+        let mut game_grid = GameGrid{squares,state};
 
-        let new_game_grid = update_game_grid(&game_grid);
+        update_game_grid(&mut game_grid);
         
         let result_grid_state = vec![
             vec![State::Dead,State::Dead,State::Dead,State::Dead],
@@ -163,7 +164,7 @@ mod tests {
             vec![State::Dead,State::Dead,State::Dead,State::Dead],
             vec![State::Dead,State::Dead,State::Dead,State::Dead],
         ];
-        assert_eq!(result_grid_state,new_game_grid.state);
+        assert_eq!(result_grid_state,game_grid.state);
     }
 
     #[test]
@@ -176,9 +177,9 @@ mod tests {
             vec![State::Dead,State::Dead,State::Dead,State::Dead],
         ];
 
-        let game_grid = GameGrid{squares,state};
+        let mut game_grid = GameGrid{squares,state};
 
-        let new_game_grid = update_game_grid(&game_grid);
+        update_game_grid(&mut game_grid);
         
         let result_grid_state = vec![
             vec![State::Dead,State::Dead,State::Dead,State::Dead],
@@ -186,7 +187,7 @@ mod tests {
             vec![State::Dead,State::Dead,State::Dead,State::Dead],
             vec![State::Dead,State::Dead,State::Dead,State::Dead],
         ];
-        assert_eq!(result_grid_state,new_game_grid.state);
+        assert_eq!(result_grid_state,game_grid.state);
     }
 
     #[test]
@@ -200,9 +201,9 @@ mod tests {
             vec![State::Dead,State::Dead,State::Dead,State::Dead,State::Dead],
         ];
 
-        let game_grid = GameGrid{squares,state};
+        let mut game_grid = GameGrid{squares,state};
 
-        let new_game_grid = update_game_grid(&game_grid);
+        update_game_grid(&mut game_grid);
         
         let result_grid_state = vec![
             vec![State::Dead,State::Dead,State::Dead,State::Dead,State::Dead],
@@ -211,7 +212,7 @@ mod tests {
             vec![State::Dead,State::Dead,State::Dead,State::Dead,State::Dead],
             vec![State::Dead,State::Dead,State::Dead,State::Dead,State::Dead],
         ];
-        assert_eq!(result_grid_state,new_game_grid.state);
+        assert_eq!(result_grid_state,game_grid.state);
     }
 
     #[test]
@@ -225,9 +226,9 @@ mod tests {
             vec![State::Dead,State::Dead,State::Dead,State::Dead,State::Dead],
         ];
 
-        let game_grid = GameGrid{squares,state};
+        let mut game_grid = GameGrid{squares,state};
 
-        let new_game_grid = update_game_grid(&game_grid);
+        update_game_grid(&mut game_grid);
         
         let result_grid_state = vec![
             vec![State::Dead,State::Dead,State::Dead,State::Dead,State::Dead],
@@ -236,7 +237,7 @@ mod tests {
             vec![State::Dead,State::Alive,State::Dead,State::Dead,State::Dead],
             vec![State::Dead,State::Dead,State::Dead,State::Dead,State::Dead],
         ];
-        assert_eq!(result_grid_state,new_game_grid.state);
+        assert_eq!(result_grid_state,game_grid.state);
     }
 
 }

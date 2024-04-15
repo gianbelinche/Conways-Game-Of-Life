@@ -1,29 +1,25 @@
-use std::error::Error;
+use crate::custom_error::CustomError;
+
 use super::game_logic;
 
-#[derive(Debug)]
-pub struct CustomError(pub String);
 
-impl std::fmt::Display for CustomError {
-    fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
-        write!(f, "{}", self.0)
-    }
-}
-
-impl Error for CustomError {
-    fn description(&self) -> &str {
-        &self.0
-    }
-}
-
-pub fn parse_grid(path: &String) -> Result<game_logic::GameGrid, Box<dyn Error>> {
+pub fn parse_grid(path: &String) -> Result<game_logic::GameGrid, CustomError> {
     // Returns a grid from a path to a file, it does not have error handling yet
     let mut state: Vec<Vec<game_logic::State>> = vec![];
-    let mut rdr =  csv::ReaderBuilder::new().has_headers(false).from_path(path)?;
+    let mut rdr =  match csv::ReaderBuilder::new().has_headers(false).from_path(path) {
+        Ok(res) => res,
+        Err(_) => return Err(CustomError::FileNotFound)
+    };
     for result in rdr.records() {
         let mut vector_internal: Vec<game_logic::State> = vec![];
-        let record = result?;
-        let vector: Vec<String> = record.deserialize(None)?;
+        let record = match result{
+            Ok(res) => res,
+            Err(_) => return Err(CustomError::IncorrectFormat)
+        };
+        let vector: Vec<String> = match record.deserialize(None) {
+            Ok(res) => res,
+            Err(_) => return Err(CustomError::IncorrectFormat)
+        };
         for v in vector {
             if v == "1" {
                 vector_internal.push(game_logic::State::Alive);
@@ -32,7 +28,7 @@ pub fn parse_grid(path: &String) -> Result<game_logic::GameGrid, Box<dyn Error>>
             } else if v == ""{
                 continue;
             } else {
-                return Err(Box::new(CustomError("Incorrect CSV format: state not 0 nor 1".to_string())));
+                return Err(CustomError::WrongState);
             }
         }
         state.push(vector_internal);
@@ -40,7 +36,7 @@ pub fn parse_grid(path: &String) -> Result<game_logic::GameGrid, Box<dyn Error>>
     let squares = state.len() as u32;
     for v in &state {
         if v.len() as u32 != squares {
-            return Err(Box::new(CustomError("Incorrect CSV format: missing line(s)".to_string())));
+            return Err(CustomError::MissingLines);
         }
     }
 

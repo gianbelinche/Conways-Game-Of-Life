@@ -1,10 +1,10 @@
-use game_logic::GameGrid;
 use macroquad::window::next_frame;
 
 mod graphical_interface;
 mod game_logic;
 mod parser;
 mod game_runner;
+mod custom_error;
 
 #[macroquad::main("Conways Game Of Life")]
 async fn main(){
