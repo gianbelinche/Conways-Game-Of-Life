@@ -7,15 +7,15 @@ pub enum State{
 #[derive(Clone)]
 /// Represents the squared grid of size squares
 pub struct GameGrid {
-    pub squares: u32,
+    pub squares: usize,
     pub state: Vec<Vec<State>>
 }
 
 /// Creates an initial grid of size squares
-pub fn create_initial_game_grid(squares:u32) -> GameGrid{
+pub fn create_initial_game_grid(squares:usize) -> GameGrid{
     let mut state = vec![];
     for _ in 0..squares {
-        state.push(vec![State::Dead;squares as usize]);
+        state.push(vec![State::Dead;squares]);
     }
     GameGrid{squares,state}
 }
@@ -49,51 +49,22 @@ fn get_new_state(i: usize,j: usize,grid: &GameGrid) -> State {
 fn get_alive_neighbours(i: usize, j: usize, grid: &GameGrid) -> u32 {
 
     let mut alive_neighbours = 0;
+    let squares = grid.squares;
 
-    if grid.state[index_no_overflow_sub(i as i32, grid.squares) as usize][j] == State::Alive {
-        alive_neighbours += 1;
+    for dirx in -1..=1 {
+        for diry in -1..=1 {
+            if dirx == 0 && diry == 0 {
+                continue;
+            }
+            let x = (i as i32+squares as i32+dirx) as usize % squares;
+            let y = (j as i32+squares as i32+diry) as usize % squares;
+            if grid.state[x][y] == State::Alive {
+                alive_neighbours += 1;
+            }
+        }
     }
-    if grid.state[index_no_overflow_add(i as i32, grid.squares) as usize][j] == State::Alive {
-        alive_neighbours += 1;
-    }
-    if grid.state[i][index_no_overflow_add(j as i32, grid.squares) as usize] == State::Alive {
-        alive_neighbours += 1;
-    }
-    if grid.state[i][index_no_overflow_sub(j as i32, grid.squares) as usize] == State::Alive {
-        alive_neighbours += 1;
-    }
-    if grid.state[index_no_overflow_sub(i as i32, grid.squares) as usize][index_no_overflow_add(j as i32, grid.squares) as usize] == State::Alive {
-        alive_neighbours += 1;
-    }
-    if grid.state[index_no_overflow_sub(i as i32, grid.squares) as usize][index_no_overflow_sub(j as i32, grid.squares) as usize] == State::Alive {
-        alive_neighbours += 1;
-    }
-    if grid.state[index_no_overflow_add(i as i32, grid.squares) as usize][index_no_overflow_sub(j as i32, grid.squares) as usize] == State::Alive {
-        alive_neighbours += 1;
-    }
-    if grid.state[index_no_overflow_add(i as i32, grid.squares) as usize][index_no_overflow_add(j as i32, grid.squares) as usize] == State::Alive {
-        alive_neighbours += 1;
-    } // TODO make this less ugly
 
     alive_neighbours
-}
-
-/// Returns sub of i and 1 bounded by squares
-fn index_no_overflow_sub(i: i32,squares: u32) -> i32 {
-    if (i - 1) < 0 {
-        (squares - 1) as i32
-    } else {
-        i-1
-    }
-}
-
-/// Returns add of i and 1 bounded by squares
-fn index_no_overflow_add(i: i32, squares: u32) -> i32{
-    if (i + 1) > (squares - 1) as i32 {
-        0
-    } else {
-        i + 1
-    }
 }
 
 #[cfg(test)]

@@ -30,9 +30,9 @@ pub fn parse_grid(path: &String) -> Result<game_logic::GameGrid, CustomError> {
         }
         state.push(vector_internal);
     }
-    let squares = state.len() as u32;
+    let squares = state.len();
     for v in &state {
-        if v.len() as u32 != squares {
+        if v.len() != squares {
             return Err(CustomError::MissingLines);
         }
     }
