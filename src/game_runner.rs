@@ -10,6 +10,7 @@ use super::parser;
 use std::thread;
 use std::time;
 
+/// Checks if the game is valid, returns the game grid and the milliseconds
 pub fn check_game_validity() -> Result<(GameGrid,u64),CustomError> {
     let args: Vec<String> = env::args().collect();
     if args.len() != 3 {
@@ -22,6 +23,7 @@ pub fn check_game_validity() -> Result<(GameGrid,u64),CustomError> {
     Ok((parser::parse_grid(&args[1])?,milliseconds))
 }
 
+/// Runs the game loop
 pub async fn run_game(game_grid: &mut GameGrid,milliseconds: u64) {
     loop {
         clear_background(WHITE);
