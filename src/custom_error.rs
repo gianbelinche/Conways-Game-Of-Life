@@ -1,10 +1,10 @@
-pub enum CustomError{
+pub enum CustomError {
     IncorrectNumberOfArguments,
     WrongState,
     MissingLines,
     FileNotFound,
     IncorrectFormat,
-    BadMilliseconds
+    BadMilliseconds,
 }
 
 impl CustomError {
@@ -15,7 +15,7 @@ impl CustomError {
             CustomError::MissingLines => "Incorrect CSV format: missing line(s)".to_string(),
             CustomError::FileNotFound => "File not found".to_string(),
             CustomError::IncorrectFormat => "Incorrect CSV format".to_string(),
-            CustomError::BadMilliseconds => "Incorrect milliseconds format".to_string()
+            CustomError::BadMilliseconds => "Incorrect milliseconds format".to_string(),
         }
     }
 }
