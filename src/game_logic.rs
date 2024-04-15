@@ -20,8 +20,8 @@ pub fn create_initial_game_grid(squares:u32) -> GameGrid{
     GameGrid{squares,state}
 }
 
-pub fn update_game_grid(game_grid: &GameGrid) -> GameGrid{
-    // Update the grid state based on game of lifes rules, returns the new state
+pub fn update_game_grid(game_grid: &mut GameGrid) {
+    // Update the grid state based on game of lifes rules
     let mut new_game_grid = create_initial_game_grid(game_grid.squares);
     for i in 0..game_grid.squares {
         for j in 0..game_grid.squares {
@@ -30,7 +30,7 @@ pub fn update_game_grid(game_grid: &GameGrid) -> GameGrid{
         }
     }
 
-    new_game_grid
+    *game_grid = new_game_grid;
 }
 
 fn get_new_state(i: usize,j: usize,grid: &GameGrid) -> State {
