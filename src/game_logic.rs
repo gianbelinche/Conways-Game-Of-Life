@@ -33,15 +33,11 @@ pub fn update_game_grid(game_grid: &mut GameGrid) {
     *game_grid = new_game_grid;
 }
 
-/// Given a cell, returns the new state based on game of lifes rules
+/// Given a cell, returns the new state based on game of life's rules
 fn get_new_state(i: usize,j: usize,grid: &GameGrid) -> State {
-    let alive_neighbours = get_alive_neighbours(i,j,grid);
-    if grid.state[i][j] == State::Dead && alive_neighbours == 3 {
-        State::Alive
-    } else if grid.state[i][j] == State::Alive && (alive_neighbours == 2 || alive_neighbours == 3) {
-        State::Alive
-    } else {
-        State::Dead
+    match (grid.state[i][j], get_alive_neighbours(i, j, grid)) {
+        (State::Dead, 3)|(State::Alive, 2|3) => State::Alive,
+        _ => State::Dead,
     }
 }
 
