@@ -24,11 +24,11 @@ You should have Rust and Cargo installed
 
 Clone this repository and execute the following command to run
 
-`cargo run <path_to_csv_file> <time_between_frames_in_milliseconds>`
+`make run csv_path=<path_to_csv_file> milliseconds=<time_between_frames_in_milliseconds>`
 
 Use the following command to run tests
 
-`cargo test`
+`make test`
 
 ### CSV Format
 
@@ -47,24 +47,25 @@ With 1 representing an alive cell, and 0 a dead cell.
 
 Three examples are provided under the examples folder, you can run them as follows
 
-- Glider: `cargo run examples/glider.csv 500`
-- Space Ship: `cargo run examples/space_ship.csv 500`
-- Glider Gun: `cargo run examples/glider_gun.csv 100`
+- Glider: `make glider`
+- Space Ship: `make space_ship`
+- Glider Gun: `make glider_gun`
 
 ## Error Handling
 
 The following errors can occur, they show a message on screen detailing the error
 
-- File not Found: `cargo run examples/not_existing_file.csv 500`
-- Invalid number for time argument: `cargo run examples/glider.csv a`
-- Incorrect number of arguments: `cargo run examples/glider.csv`
+- File not Found: `make run csv_path=examples/not_existing_file.csv milliseconds=500`
+- Invalid number for time argument: `make run csv_path=examples/glider.csv milliseconds=a`
+- Incorrect number of arguments: `cargo run csv_path=examples/glider.csv`
 - Incorrect formatting of CSV:
-    - `cargo run examples/wrong_format.csv 100`
-    - `cargo run examples/wrong_format_2.csv 100`
-    - `cargo run examples/wrong_format_3.csv 100`
+    - `make run csv_path=examples/wrong_format.csv milliseconds=100`
+    - `make run csv_path=examples/wrong_format_2.csv milliseconds=100`
+    - `make run csv_path=examples/wrong_format_3.csv milliseconds=100`
 
 ## References
 
 [Conway's Game of Life's Wikipedia](https://en.wikipedia.org/wiki/Conway%27s_Game_of_Life) 
 
 [Youtube Video with Examples](https://www.youtube.com/watch?v=C2vgICfQawE) 
+
